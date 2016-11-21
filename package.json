@@ -4,8 +4,26 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "node app.js"
+    "start": "babel-node index.js",
+    "dev": "babel-watch index.js",
+    "test": "mocha --compilers js:babel-register --recursive --reporter spec --timeout 10000",
+    "clean": "rm *~ #*"
   },
   "author": "boehm erwan",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "babel-core": "^6.18.2",
+    "babel-preset-stage-3": "^6.17.0",
+    "babel-watch": "^2.0.3",
+    "bcrypt-then": "^1.1.0",
+    "bluebird": "^3.4.6",
+    "body-parser": "^1.15.2",
+    "bookshelf": "^0.10.2",
+    "connect-compose": "0.0.1",
+    "express": "^4.14.0",
+    "knex": "^0.12.6",
+    "knex-postgis": "^0.2.0",
+    "pg": "^6.1.0",
+    "randomstring": "^1.1.5"
+  }
 }
