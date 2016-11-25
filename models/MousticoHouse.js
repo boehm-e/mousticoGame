@@ -4,18 +4,14 @@ const _ = require('lodash');
 const AuthToken = require('../models/AuthToken');
 
 module.exports = Bookshelf.Model.extend({
-  tableName: 'users',
-  hidden: ['password'],
+  tableName: 'mousticoHouses',
   delete: async function() {
     return await this.destroy();
   }
 }, {
-  create: async function(body) {
-    const realbody = _.pick(body, ['email', 'password', 'firstname', 'lastname']);
-    console.log("\n\nREALBODY : ",realbody);
-    realbody.password = await bcrypt.hash(realbody.password, 10);
-    const user = await (await new this(realbody).save()).fetch();
-    return user;
+  create: async function(userId) {
+    const mousticoHouse = await (await new this({created_by: userId, owner: userId}).save()).fetch();
+    return mousticoHouse;
   },
   find: async function(email, password) {
     if (!email || !password) throw new Error("Email and password are required");

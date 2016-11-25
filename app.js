@@ -1,7 +1,10 @@
 global.Promise = require('bluebird');
+var assignUser = require('./middlewares/isLoggedIn');
 var express = require('express');
 var app = module.exports = express();
-
+// TO CONNECT TO DB :
+// 1 : su - moustico
+// 2 :  psql -d moustico -U moustico
 
 
 app.use((req, res, next) => {
@@ -11,8 +14,11 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use("/api/v1", assignUser);
 
 // Routes
 
 /*Fiter*/
 app.post("/api/v1/login", require('./routes/login'));
+app.post("/api/v1/register", require('./routes/register'));
+app.get("/api/v1/createMousticoHouse", require('./routes/createMousticoHouse'));

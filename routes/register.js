@@ -6,11 +6,7 @@ const bodyParser = require('body-parser');
 const randomstring = require('randomstring');
 
 module.exports = compose([bodyParser.urlencoded(), wrapPromise(async function(req, res, next) {
-  try {
-    var user = await User.find(req.body.login, req.body.password);
-  } catch (e) {
-    next(e);
-  }
+  var user = await User.create(req.body);
 
   const token = await new AuthToken({
     userId: user.get('id'),
