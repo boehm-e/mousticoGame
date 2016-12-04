@@ -14,5 +14,4 @@ module.exports = compose([bodyParser.urlencoded(), wrapPromise(async function(re
     message: "",
     data: house
   });
-
 })]);
