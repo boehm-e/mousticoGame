@@ -6,7 +6,6 @@ const bodyParser = require('body-parser');
 const randomstring = require('randomstring');
 
 module.exports = compose([bodyParser.urlencoded(), wrapPromise(async function(req, res, next) {
-  console.log(req.user);
   var house = await MousticoHouse.create(req.user.get('id'));
 
   return res.json({

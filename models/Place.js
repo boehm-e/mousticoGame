@@ -8,7 +8,7 @@ moment.locale('fr');
 module.exports = Bookshelf.Model.extend({
     tableName: 'places',
     likers: function() {
-        return this.belongsToMany(require('./User'), 'place_like', 'placeId', 'userId');
+        return this.belongsToMany(require('./User'), 'place_like', 'placeId', 'user_id');
     },
     update: async function(body) {
         const realbody = _.pick(body, ['type', 'name', 'address', 'start_time', 'end_time', 'pos', 'services', 'transport', 'handicap']);
@@ -59,7 +59,7 @@ module.exports = Bookshelf.Model.extend({
             place.slots = result.rows;
             return place;
         } catch (e) {
-            console.log(e);
+            le.log(e);
             return false;
         }
     },

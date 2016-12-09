@@ -7,13 +7,13 @@ const randomstring = require('randomstring');
 
 module.exports = compose([bodyParser.urlencoded(), wrapPromise(async function(req, res, next) {
   try {
-    var user = await User.find(req.body.login, req.body.password);
+    var user = await User.login(req.body.email, req.body.password);
   } catch (e) {
     next(e);
   }
 
   const token = await new AuthToken({
-    userId: user.get('id'),
+    user_id: user.get('id'),
     token: randomstring.generate({ length: 32 })
   }).save();
 

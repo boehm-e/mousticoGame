@@ -4,13 +4,13 @@ const _ = require('lodash');
 const AuthToken = require('../models/AuthToken');
 
 module.exports = Bookshelf.Model.extend({
-  tableName: 'mousticoHouses',
+  tableName: 'moustico_houses',
   delete: async function() {
     return await this.destroy();
   }
 }, {
-  create: async function(userId) {
-    const mousticoHouse = await (await new this({created_by: userId, owner: userId}).save()).fetch();
+  create: async function(user_id) {
+    const mousticoHouse = await (await new this({created_by: user_id, owner: user_id}).save()).fetch();
     return mousticoHouse;
   },
   find: async function(email, password) {

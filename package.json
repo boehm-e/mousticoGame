@@ -20,6 +20,7 @@
     "body-parser": "^1.15.2",
     "bookshelf": "^0.10.2",
     "connect-compose": "0.0.1",
+    "croner": "^1.1.17",
     "express": "^4.14.0",
     "knex": "^0.12.6",
     "knex-postgis": "^0.2.0",
