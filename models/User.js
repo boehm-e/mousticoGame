@@ -3,12 +3,37 @@ const bcrypt = require('bcrypt-then');
 const _ = require('lodash');
 const AuthToken = require('../models/AuthToken');
 const bloodFactory = require('../models/BloodFactory');
+const Moustiques = require('../models/Moustiques');
 
 module.exports = Bookshelf.Model.extend({
   tableName: 'users',
   hidden: ['password'],
   delete: async function() {
     return await this.destroy();
+  },
+  enroleMoustiques: async function(number, level, validate) {
+    const id = this.get('id');
+    const factory = await bloodFactory.get(id);
+    const moustique_price = 10;
+    const total_litre = Object.values(_.pick(factory, ['blood_A', 'blood_B', 'blood_AB', 'blood_O'])).reduce((pv, cv) => pv+cv, 0)
+    console.log(total_litre);
+    var _moustiques = [];
+    if(number * level * moustique_price <= total_litre) {
+      console.log("YOU CAN PAY");
+      if (validate) {
+        for (var i = 0; i < number; i++) {
+          await Moustiques.enrole(id, level);
+        }
+      }
+    } else {
+      console.log("NEED MORE BLOOD");
+      return null;
+    }
+    return await Moustiques.get(id);
+
+  },
+  payMoustique: async function(price) {
+
   }
 }, {
   create: async function(body) {
@@ -49,14 +74,14 @@ module.exports = Bookshelf.Model.extend({
   getAll: async function() {
     var users = await Bookshelf.knex.raw(`
       SELECT "blood_A",
-             "blood_B",
-             "blood_AB",
-             "blood_O",
-             blood_factory.level,
-             users.id AS "userId"
+      "blood_B",
+      "blood_AB",
+      "blood_O",
+      blood_factory.level,
+      users.id AS "userId"
       FROM blood_factory
       LEFT JOIN users ON blood_factory.owner=users.id;
       `);
-    return users.rows;
-  }
-});
+      return users.rows;
+    }
+  });

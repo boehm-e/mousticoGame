@@ -3,8 +3,8 @@ const User = require('../models/User');
 const bloodFactory = require('../models/BloodFactory');
 
 exports.init = () => {
-  // UPDATE BLOOD EVERY 60 SECONDES
 
+  // UPDATE BLOOD EVERY 60 SECONDES
   Cron('*/3 * * * * *', async function() {
     const users = await User.getAll();
     console.log("-- updating blood");
@@ -16,4 +16,6 @@ exports.init = () => {
       bloodFactory.addBlood(v, v.userId);
     })
   });
+
+
 };

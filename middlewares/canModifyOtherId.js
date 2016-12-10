@@ -1,6 +1,6 @@
 const wrapPromise = require('../utils/wrapPromise');
 
-module.exports = function (type, roles) {
+module.exports = function (type, roles, self = []) {
     return wrapPromise(async function canModifyOtherId(req, res, next) {
         if (req.user && req.user instanceof type && (req.params.id == 'me' || req.params.id == req.user.get('id'))) {
             req.target = req.user;

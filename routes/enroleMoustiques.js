@@ -7,13 +7,20 @@ const randomstring = require('randomstring');
 const accessControl = require('../middlewares/canModifyOtherId');
 
 module.exports = compose([bodyParser.urlencoded(), accessControl(User, []), wrapPromise(async function(req, res, next) {
-  const userId = req.user.get('id');
-  var users = await User.get(userId);
-
+  if (req.body.number > 0 && req.body.level > 0 && req.body.validate) {
+    var moustiques = await req.target.enroleMoustiques(req.body.number, req.body.level, req.body.validate);
+  }
+  if (!moustiques) {
+    return res.status(400).json({
+      status: 0,
+      message: "pas assez d'argent",
+      data: null
+    });
+  }
   return res.json({
     status: 1,
     message: "",
-    data: users
+    data: moustiques
   });
 
 })]);

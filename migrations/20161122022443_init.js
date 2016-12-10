@@ -9,22 +9,15 @@ exports.up = function(knex, Promise) {
         table.string('lastname');
         table.integer('level').notNullable().defaultTo(1);
       }),
-      knex.schema.createTable('moustico_houses', function(table) {
-        table.increments().primary();
-        table.integer('level').notNullable().defaultTo(1);
-        table.integer('blood');
-        table.integer('created_by').notNullable().references('users.id');
-        table.integer('owner').references('users.id').onDelete('CASCADE');
-      }),
       knex.schema.createTable('moustiques', function(table) {
         table.increments().primary();
-        table.integer('moustico_house_id').references('moustico_houses.id').onDelete('CASCADE');;
         table.integer('user_id').references('users.id').onDelete('CASCADE');
         table.integer('level').notNullable().defaultTo(1);
         table.integer('blood_A').notNullable().defaultTo(0);
         table.integer('blood_B').notNullable().defaultTo(0);
         table.integer('blood_AB').notNullable().defaultTo(0);
         table.integer('blood_O').notNullable().defaultTo(0);
+        table.boolean('is_out').notNullable().defaultTo(false);
       }),
       knex.schema.createTable('blood_factory', function(table) {
         table.increments().primary();
@@ -48,7 +41,6 @@ exports.down = function(knex, Promise) {
   return Promise.all([
     knex.raw('DROP TABLE if exists moustiques cascade'),
     knex.raw('DROP TABLE if exists auth_tokens cascade'),
-    knex.raw('DROP TABLE if exists moustico_houses cascade'),
     knex.raw('DROP TABLE if exists users cascade'),
     knex.raw('DROP TABLE if exists blood_factory cascade')
   ])

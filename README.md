@@ -32,3 +32,4 @@ psql -d moustico -U moustico
 > >- incremente avec les jours (on s'en sert pour lancer des attaques)
 
 => le chef des moustiques envoie des moustiques chercher du sang.
+=> si au moment du payement les moustiques ne peuvent pas etre payes: ils demissionnent!
