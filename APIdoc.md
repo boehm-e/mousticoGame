@@ -32,9 +32,13 @@ enrole moustiques, store them in your camp (if not created, return error)
 + #### body
 >> __number__: integer
 >> __level__: integer
->> __validate__: boolean: if (true): buy: send price
 
 
+> #### [GET] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/api/vi/users/:id/fireMoustiques/:moustiqueId
+fire moustiques
++ #### params
+>> __id__: integer
+>> __moustiqueId__: integer
 
 
 <!--

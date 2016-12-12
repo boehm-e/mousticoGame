@@ -11,7 +11,7 @@ exports.up = function(knex, Promise) {
       }),
       knex.schema.createTable('moustiques', function(table) {
         table.increments().primary();
-        table.integer('user_id').references('users.id').onDelete('CASCADE');
+        table.integer('owner').references('users.id').onDelete('CASCADE');
         table.integer('level').notNullable().defaultTo(1);
         table.integer('blood_A').notNullable().defaultTo(0);
         table.integer('blood_B').notNullable().defaultTo(0);
