@@ -1,7 +1,8 @@
 global.Promise = require('bluebird');
-var assignUser = require('./middlewares/isLoggedIn');
-var express = require('express');
-var app = module.exports = express();
+const assignUser = require('./middlewares/isLoggedIn');
+const express = require('express');
+const app = module.exports = express();
+const bodyParser = require('body-parser');
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
