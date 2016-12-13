@@ -1,6 +1,7 @@
 ### CONNEXION A LA BDD
 ```
-su - moustico
+ssh -L 5432:localhost:5432 azureuser@moustico.cloudapp.net (password: Etna2019)
+su - moustico (password: moustico)
 psql -d moustico -U moustico
 ```
 
