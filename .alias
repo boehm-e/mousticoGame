@@ -1,0 +1,8 @@
+#!/bin/bash
+
+alias npm='docker exec moskito_node_1 npm'
+alias app-build='docker-compose build'
+alias app-destroy='docker-compose stop && docker-compose rm'
+alias app-start='docker-compose up -d && cat ./docker/start.txt'
+alias app-node-bash='clear && docker exec -ti moskito_node_1 /bin/bash'
+alias app-postgres-bash='clear && docker exec -ti moskito_postgres_1 /bin/bash'

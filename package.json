@@ -7,7 +7,10 @@
     "start": "babel-node index.js",
     "dev": "babel-watch index.js",
     "test": "mocha --compilers js:babel-register --recursive --reporter spec --timeout 10000",
-    "clean": "rm *~ #*"
+    "clean": "rm *~ #*",
+    "knex": "knex",
+    "knex:migrate:latest": "npm run knex -- migrate:latest",
+    "docker:run": "npm run dev"
   },
   "author": "boehm erwan",
   "license": "ISC",
@@ -15,6 +18,7 @@
     "babel-core": "^6.18.2",
     "babel-preset-stage-3": "^6.17.0",
     "babel-watch": "^2.0.3",
+    "bcrypt": "^1.0.1",
     "bcrypt-then": "^1.1.0",
     "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
@@ -26,5 +30,8 @@
     "knex-postgis": "^0.2.0",
     "pg": "^6.1.0",
     "randomstring": "^1.1.5"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0"
   }
 }

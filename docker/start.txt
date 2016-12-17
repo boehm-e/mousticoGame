@@ -1,0 +1,5 @@
+#                                     #
+ APPLICATION WILL START IN FEW SECONDS
+#                                     #
+
+- npm run knex:migrate:latest

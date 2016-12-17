@@ -1,0 +1,33 @@
+version: '2'
+services:
+    node:
+        build:
+            context: ./docker/node
+        ports:
+            - ${NODE_PORT}:4242
+        volumes:
+            - .:/var/www/app
+        depends_on:
+            - postgres
+        tty: true
+        networks:
+            moskito:
+                ipv4_address: 172.42.0.10
+    postgres:
+        image: postgres:9.6
+        ports:
+            - 5432:5432
+        environment:
+            - POSTGRES_PASSWORD=moustico
+            - POSTGRES_USER=moustico
+            - POSTGRES_DB=moustico
+        networks:
+            moskito:
+                ipv4_address: 172.42.0.15
+networks:
+    moskito:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.42.0.0/24
