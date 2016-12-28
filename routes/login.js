@@ -8,6 +8,7 @@ const randomstring = require('randomstring');
 module.exports = compose([bodyParser.urlencoded(), wrapPromise(async function(req, res, next) {
   try {
     var user = await User.login(req.body.email, req.body.password);
+    console.log(user);
   } catch (e) {
     next(e);
   }

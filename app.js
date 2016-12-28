@@ -20,6 +20,7 @@ app.get("/api/v1/users", require('./routes/getUsers'));
 app.get("/api/v1/users/:id", require('./routes/getUsersById'));
 app.post("/api/v1/users/:id/enroleMoustiques", require('./routes/enroleMoustiques'))
 app.get("/api/v1/users/:id/fireMoustiques/:moustiqueId", require('./routes/fireMoustiques'))
+app.post("/api/v1/users/:id/setMap", require('./routes/setMap'))
 
 
 // INIT GAME

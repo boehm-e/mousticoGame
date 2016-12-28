@@ -44,6 +44,9 @@ module.exports = Bookshelf.Model.extend({
       }
     }
     return null;
+  },
+  setMap: async function(map) {
+    return await (await this.set({map: map}).save()).fetch();
   }
 }, {
   create: async function(body) {

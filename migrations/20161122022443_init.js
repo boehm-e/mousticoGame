@@ -7,6 +7,7 @@ exports.up = function(knex, Promise) {
         table.string('password');
         table.string('firstname');
         table.string('lastname');
+        table.jsonb('map');
         table.integer('level').notNullable().defaultTo(1);
       }),
       knex.schema.createTable('moustiques', function(table) {
