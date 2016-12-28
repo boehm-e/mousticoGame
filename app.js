@@ -1,8 +1,17 @@
 global.Promise = require('bluebird');
 const assignUser = require('./middlewares/isLoggedIn');
-const express = require('express');
-const app = module.exports = express();
-const bodyParser = require('body-parser');
+
+var bodyParser = require('body-parser')
+var express = require('express');
+var app = express();
+var server = app.listen(4242, function() {
+    console.log("server started on port 4242");
+});
+
+var io = require('socket.io').listen(server);
+io.on('connection', function (socket) {
+    console.log("CONNECTED");
+});
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -10,6 +19,7 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
     next();
 });
+
 app.use(bodyParser.json());
 app.use("/", assignUser);
 
@@ -25,4 +35,4 @@ app.post("/api/v1/users/:id/setMap", require('./routes/setMap'))
 
 // INIT GAME
 var blood = require('./utils/updateBlood');
-// blood.init()
+blood.init()

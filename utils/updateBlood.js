@@ -9,6 +9,7 @@ exports.init = () => {
     const users = await User.getAll();
     console.log("-- updating blood");
     users.map(v => {
+      console.log(v);
       v.blood_A += v.level * 10;
       v.blood_B += v.level * 10;
       v.blood_AB += v.level * 10;
@@ -16,6 +17,4 @@ exports.init = () => {
       bloodFactory.addBlood(v, v.userId);
     })
   });
-
-
 };
