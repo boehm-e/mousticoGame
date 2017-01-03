@@ -7,11 +7,15 @@ var app = express();
 var server = app.listen(4242, function() {
     console.log("server started on port 4242");
 });
-
 var io = require('socket.io').listen(server);
 io.on('connection', function (socket) {
-    console.log("CONNECTED");
+    var token = socket.request._query.token;
+    socket.token = token;
+    socket.on('data', function(data) {
+        io.emit('test', {coucou: true})
+    })
 });
+
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -34,5 +38,4 @@ app.post("/api/v1/users/:id/setMap", require('./routes/setMap'))
 
 
 // INIT GAME
-var blood = require('./utils/updateBlood');
-blood.init()
+var blood = require('./utils/updateBlood')(io);

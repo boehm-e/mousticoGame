@@ -1,20 +1,24 @@
 const Cron = require('croner');
+const AuthToken = require('../models/AuthToken');
 const User = require('../models/User');
 const bloodFactory = require('../models/BloodFactory');
 
-exports.init = () => {
-
+exports = module.exports = (io) => {
   // UPDATE BLOOD EVERY 60 SECONDES
   Cron('*/3 * * * * *', async function() {
-    const users = await User.getAll();
-    console.log("-- updating blood");
-    users.map(v => {
-      console.log(v);
-      v.blood_A += v.level * 10;
-      v.blood_B += v.level * 10;
-      v.blood_AB += v.level * 10;
-      v.blood_O += v.level * 10;
-      bloodFactory.addBlood(v, v.userId);
-    })
+    for (var i in io.sockets.connected ) {
+      const _token = io.sockets.connected[i].token;
+      let token = await new AuthToken({ token: _token }).fetch({withRelated:['user']});
+      let user = token.related('user');
+      user = (await User.get(user.get('id')));
+      var blood = {};
+      var blood = user.factory;
+      blood.blood_A += parseInt(user.user.level) * 10;
+      blood.blood_B += parseInt(user.user.level) * 10;
+      blood.blood_AB += parseInt(user.user.level) * 10;
+      blood.blood_O += parseInt(user.user.level) * 10;
+      io.sockets.connected[i].emit('blood', blood);
+      bloodFactory.addBlood(user, user.user.id);
+    }
   });
 };

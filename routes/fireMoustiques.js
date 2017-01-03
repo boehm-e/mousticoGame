@@ -28,8 +28,6 @@ module.exports = compose([bodyParser.urlencoded(), accessControl(User, []), wrap
     });
   }
 
-
-  console.log(fire);
   if (fire != -1) {
     return res.json({
       status: 1,

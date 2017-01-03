@@ -13,12 +13,10 @@ module.exports = Bookshelf.Model.extend({
   },
   enroleMoustiques: async function(number, level) {
     // abc = await this.payMoustique(19, 1, ['blood_A', 'blood_B', 'blood_AB', 'blood_O']);
-    // console.log(abc);
     const id = this.get('id');
     const factory = await BloodFactory.get(id);
     const moustique_price = 10;
     const total_litre = Object.values(_.pick(factory, ['blood_A', 'blood_B', 'blood_AB', 'blood_O'])).reduce((pv, cv) => pv+cv, 0)
-    console.log(total_litre);
     var _moustiques = [];
     for (var i = 0; i < number; i++) {
       await Moustiques.enrole(id, level);
