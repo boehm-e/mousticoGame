@@ -1,4 +1,5 @@
 global.Promise = require('bluebird');
+const AuthToken = require('./models/AuthToken');
 const assignUser = require('./middlewares/isLoggedIn');
 
 var bodyParser = require('body-parser')
@@ -13,6 +14,16 @@ io.on('connection', function (socket) {
     socket.token = token;
     socket.on('data', function(data) {
         io.emit('test', {coucou: true})
+    })
+    socket.on('map', async function(data) {
+      var authToken = socket.request._query.token;
+      let token = await new AuthToken({ token: authToken }).fetch({withRelated:['user']});
+      if (token && token.related('user') && token.related('user').has('id')) {
+        var user = token.related('user')
+        await user.setMap(JSON.stringify(data));
+        socket.emit('mapUpdate');
+      }
+
     })
 });
 

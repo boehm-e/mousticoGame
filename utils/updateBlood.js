@@ -18,7 +18,7 @@ exports = module.exports = (io) => {
       blood.blood_AB += parseInt(user.user.level) * 10;
       blood.blood_O += parseInt(user.user.level) * 10;
       io.sockets.connected[i].emit('blood', blood);
-      bloodFactory.addBlood(user, user.user.id);
+      bloodFactory.addBlood(blood, user.user.id);
     }
   });
 };

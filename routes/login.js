@@ -13,7 +13,7 @@ module.exports = compose([bodyParser.urlencoded(), wrapPromise(async function(re
   }
 
   const token = await new AuthToken({
-    user_id: user.get('id'),
+    user_id: user.user.get('id'),
     token: randomstring.generate({ length: 32 })
   }).save();
 
@@ -22,7 +22,7 @@ module.exports = compose([bodyParser.urlencoded(), wrapPromise(async function(re
     message: "",
     data: {
       token: token.get('token'),
-      ...user.toJSON()
+      ...user
     }
   });
 

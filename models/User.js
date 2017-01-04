@@ -59,9 +59,16 @@ module.exports = Bookshelf.Model.extend({
   },
   login: async function(email, password) {
     if (!email || !password) throw new Error("Email and password are required");
-    const user = await new this({ email: email.toLowerCase().trim() }).fetch({ require: true });
-    if (await bcrypt.compare(password, user.get('password'))) {
-      return user;
+    const user = await new this({ email: email.toLowerCase().trim() }).fetch();
+    console.log();
+    const factory = await BloodFactory.get(user.attributes.id);
+    const moustiques = await Moustiques.get(user.attributes.id);
+    if (await bcrypt.compare(password, user.attributes.password)) {
+      return {
+        user: user,
+        factory: factory,
+        moustiques: moustiques
+      }
     } else {
       throw new Error("Invalid password");
     }
