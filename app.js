@@ -12,9 +12,13 @@ var io = require('socket.io').listen(server);
 io.on('connection', function (socket) {
     var token = socket.request._query.token;
     socket.token = token;
+
+    // HANDLE DATA
     socket.on('data', function(data) {
         io.emit('test', {coucou: true})
     })
+
+    // HANDLE MAP UPDATE
     socket.on('map', async function(data) {
       var authToken = socket.request._query.token;
       let token = await new AuthToken({ token: authToken }).fetch({withRelated:['user']});
@@ -23,8 +27,22 @@ io.on('connection', function (socket) {
         await user.setMap(JSON.stringify(data));
         socket.emit('mapUpdate');
       }
-
     })
+
+    // HANDLE MOUSTIQUE BUY
+    socket.on('enrole', async function(data) {
+      var authToken = socket.request._query.token;
+      let token = await new AuthToken({ token: authToken }).fetch({withRelated:['user']});
+      if (token && token.related('user') && token.related('user').has('id')) {
+        let user = token.related('user')
+        let number = data.number;
+        let level = data.level;
+        var moustiques = await user.enroleMoustiques(number, level);
+        socket.emit('enroleUpdate', {liste: moustiques, number: moustiques.length});
+      }
+    })
+
+
 });
 
 
@@ -50,3 +68,4 @@ app.post("/api/v1/users/:id/setMap", require('./routes/setMap'))
 
 // INIT GAME
 var blood = require('./utils/updateBlood')(io);
+var pay = require('./utils/payMoustique')(io);

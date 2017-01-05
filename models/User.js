@@ -18,30 +18,30 @@ module.exports = Bookshelf.Model.extend({
     const moustique_price = 10;
     const total_litre = Object.values(_.pick(factory, ['blood_A', 'blood_B', 'blood_AB', 'blood_O'])).reduce((pv, cv) => pv+cv, 0)
     var _moustiques = [];
-    for (var i = 0; i < number; i++) {
-      await Moustiques.enrole(id, level);
-    }
+    await Moustiques.enrole(id, level, number);
     return await Moustiques.get(id);
   },
-  payMoustique: async function(price, moustiqueId, availableBlood) {
-    const bloodFactory = await BloodFactory.query('where', 'owner', '=', this.get('id')).fetch();
-    const moustique = await Moustiques.getById(moustiqueId);
+  payMoustique: async function(userId) {
+    //  var user = await new User({id: userId});
+    console.log("TEST : ", user);
+    // const bloodFactory = this.factory;
+    //
+    // // CHECK INOUGH MONEY
+    // const blood = _.pick(bloodFactory, ['blood_A', 'blood_B', 'blood_AB', 'blood_O']);
+    // const totalMoney = Object.values(blood).reduce((first,second) => first+second)
+    // // const totalPrice = Object.values().reduce((first,second) => first+second)
+    // console.log(totalMoney);
 
-    // CHECK INOUGH MONEY
-    const blood = _.pick(bloodFactory.toJSON(), availableBlood);
-    const totalMoney = Object.values(blood).reduce((first,second) => first+second)
-    // if (totalMoney < price)
-    //   return null;
-    for (var i in blood) {
-      if (blood[i] >= price) {
-        blood[i] -= price;
-        return await (await bloodFactory.set(blood).save()).fetch();
-      } else {
-        price -= blood[i];
-        blood[i] = 0;
-      }
-    }
-    return null;
+    // for (var i in blood) {
+    //   if (blood[i] >= price) {
+    //     blood[i] -= price;
+    //     return await (await bloodFactory.set(blood).save()).fetch();
+    //   } else {
+    //     price -= blood[i];
+    //     blood[i] = 0;
+    //   }
+    // }
+    // return null;
   },
   setMap: async function(map) {
     return await (await this.set({map: map}).save()).fetch();

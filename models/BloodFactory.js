@@ -17,7 +17,6 @@ module.exports = Bookshelf.Model.extend({
   addBlood: async function(bloodObject, userId) {
     const availableBlood = _.pick(bloodObject, ['blood_A', 'blood_B', 'blood_AB', 'blood_O']);
     const bloodFactory = await this.query('where', 'owner', '=', userId).fetch();
-    console.log(bloodFactory);
     return await (await bloodFactory.set(availableBlood).save()).fetch();
   },
   get: async function(userId) {
