@@ -20,26 +20,32 @@ io.on('connection', function (socket) {
 
     // HANDLE MAP UPDATE
     socket.on('map', async function(data) {
-      var authToken = socket.request._query.token;
-      let token = await new AuthToken({ token: authToken }).fetch({withRelated:['user']});
-      if (token && token.related('user') && token.related('user').has('id')) {
-        var user = token.related('user')
-        await user.setMap(JSON.stringify(data));
-        socket.emit('mapUpdate');
-      }
+        var authToken = socket.request._query.token;
+        let token = await new AuthToken({ token: authToken }).fetch({withRelated:['user']});
+        if (token && token.related('user') && token.related('user').has('id')) {
+            var user = token.related('user')
+            await user.setMap(JSON.stringify(data));
+            socket.emit('mapUpdate');
+        }
     })
 
     // HANDLE MOUSTIQUE BUY
     socket.on('enrole', async function(data) {
-      var authToken = socket.request._query.token;
-      let token = await new AuthToken({ token: authToken }).fetch({withRelated:['user']});
-      if (token && token.related('user') && token.related('user').has('id')) {
-        let user = token.related('user')
-        let number = data.number;
-        let level = data.level;
-        var moustiques = await user.enroleMoustiques(number, level);
-        socket.emit('enroleUpdate', {liste: moustiques, number: moustiques.length});
-      }
+        data.number -= 1; // WTF BUG
+        var authToken = socket.request._query.token;
+        let token = await new AuthToken({ token: authToken }).fetch({withRelated:['user']});
+        if (token && token.related('user') && token.related('user').has('id')) {
+            let user = token.related('user')
+            let number = data.number;
+            let level = data.level;
+            var moustiques = await user.enroleMoustiques(number, level);
+
+            if (!moustiques) {
+              socket.emit('enroleFail');
+            } else {
+              socket.emit('enroleUpdate', {liste: moustiques, number: moustiques.length});
+            }
+        }
     })
 
 
@@ -68,4 +74,3 @@ app.post("/api/v1/users/:id/setMap", require('./routes/setMap'))
 
 // INIT GAME
 var blood = require('./utils/updateBlood')(io);
-var pay = require('./utils/payMoustique')(io);

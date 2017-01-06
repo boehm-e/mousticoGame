@@ -13,10 +13,10 @@ exports = module.exports = (io) => {
       user = (await User.get(user.get('id')));
       var blood = {};
       var blood = user.factory;
-      blood.blood_A += parseInt(user.user.level) * 10;
-      blood.blood_B += parseInt(user.user.level) * 10;
-      blood.blood_AB += parseInt(user.user.level) * 10;
-      blood.blood_O += parseInt(user.user.level) * 10;
+      blood.blood_A += parseInt(user.user.level) * 0;
+      blood.blood_B += parseInt(user.user.level) * 0;
+      blood.blood_AB += parseInt(user.user.level) * 0;
+      blood.blood_O += parseInt(user.user.level) * 0;
       io.sockets.connected[i].emit('blood', blood);
       bloodFactory.addBlood(blood, user.user.id);
     }

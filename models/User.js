@@ -12,36 +12,15 @@ module.exports = Bookshelf.Model.extend({
     return await this.destroy();
   },
   enroleMoustiques: async function(number, level) {
-    // abc = await this.payMoustique(19, 1, ['blood_A', 'blood_B', 'blood_AB', 'blood_O']);
     const id = this.get('id');
     const factory = await BloodFactory.get(id);
     const moustique_price = 10;
     const total_litre = Object.values(_.pick(factory, ['blood_A', 'blood_B', 'blood_AB', 'blood_O'])).reduce((pv, cv) => pv+cv, 0)
     var _moustiques = [];
-    await Moustiques.enrole(id, level, number);
+    var res = await Moustiques.enrole(id, level, number);
+    if (!res)
+      return null;
     return await Moustiques.get(id);
-  },
-  payMoustique: async function(userId) {
-    //  var user = await new User({id: userId});
-    console.log("TEST : ", user);
-    // const bloodFactory = this.factory;
-    //
-    // // CHECK INOUGH MONEY
-    // const blood = _.pick(bloodFactory, ['blood_A', 'blood_B', 'blood_AB', 'blood_O']);
-    // const totalMoney = Object.values(blood).reduce((first,second) => first+second)
-    // // const totalPrice = Object.values().reduce((first,second) => first+second)
-    // console.log(totalMoney);
-
-    // for (var i in blood) {
-    //   if (blood[i] >= price) {
-    //     blood[i] -= price;
-    //     return await (await bloodFactory.set(blood).save()).fetch();
-    //   } else {
-    //     price -= blood[i];
-    //     blood[i] = 0;
-    //   }
-    // }
-    // return null;
   },
   setMap: async function(map) {
     return await (await this.set({map: map}).save()).fetch();
@@ -60,7 +39,6 @@ module.exports = Bookshelf.Model.extend({
   login: async function(email, password) {
     if (!email || !password) throw new Error("Email and password are required");
     const user = await new this({ email: email.toLowerCase().trim() }).fetch();
-    console.log();
     const factory = await BloodFactory.get(user.attributes.id);
     const moustiques = await Moustiques.get(user.attributes.id);
     if (await bcrypt.compare(password, user.attributes.password)) {
